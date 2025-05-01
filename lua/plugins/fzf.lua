@@ -47,7 +47,12 @@ return {{
 
     local keymap = vim.keymap.set
     local options = { silent = true }
-    keymap('n', '<C-P>', fzf.files, options)
+    -- 設置 <C-P> 快捷鍵以使用 fzf-lua 搜索檔案，並自定義使用 rg 命令
+    vim.keymap.set('n', '<C-P>', function()
+      require('fzf-lua').files({
+        cmd = 'rg --color=never --files --hidden --follow --no-ignore'
+      })
+    end, options)
     keymap('n', '<C-O>', fzf.buffers, options)
     keymap('v', '<Leader>g', fzf.grep_visual, options)
     keymap('i', '<C-x><C-f>', fzf.complete_file, options)
