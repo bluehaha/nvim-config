@@ -41,6 +41,6 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "setlocal noexpandtab"
 })
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "typescript", "js", "javascript", "json", "vue", "css", "html", "pug", "scss", "yml", "lua" },
+    pattern = { "typescript", "js", "javascript", "json", "vue", "css", "html", "pug", "scss", "yml", "lua", "tsp" },
     command = "setlocal sw=2 sts=2 ts=2"
 })

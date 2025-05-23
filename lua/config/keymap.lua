@@ -1,6 +1,6 @@
 vim.keymap.set('n', 's', ':w<CR>')
-vim.keymap.set('n', 'q', ':q<CR>')
 vim.keymap.set('n', 'qq', ':qall<CR>')
+vim.keymap.set('n', '<Leader>q', ':q<CR>')
 vim.keymap.set('n', '<Space>', ':nohlsearch<CR>')
 -- copy to clipboard
 vim.keymap.set('v', '<Leader>y', '"*y')
