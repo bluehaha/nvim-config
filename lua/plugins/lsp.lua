@@ -15,8 +15,9 @@ return {{
       ensure_installed = {
         "lua_ls",       -- lua
         "ts_ls",        -- typescript
-        "volar",        -- vue
+        -- "volar",        -- vue
         "intelephense", -- php
+        "pyright",       -- python
       },
     })
 
@@ -34,11 +35,12 @@ return {{
       },
     })
     lspconfig.ts_ls.setup({})
-    lspconfig.volar.setup({})
+    -- lspconfig.volar.setup({})
     lspconfig.intelephense.setup({
-      -- 原本是想讓一般 php 也可以在根目錄偵測，單是看起來會跟 composer.json 衝突
+      -- 原本是想讓一般 php 也可以在根目錄偵測，但是看起來會跟 composer.json 衝突
       -- root_dir = util.root_pattern("composer.json", ".git", "./"),
     })
+    lspconfig.pyright.setup({})
 
     vim.diagnostic.config({
       virtual_text = true,
