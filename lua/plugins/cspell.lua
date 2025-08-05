@@ -17,11 +17,22 @@ return {{
     }
 
     local cspell = require('cspell')
-    require("null-ls").setup {
-        sources = {
-            cspell.diagnostics.with({ config = config }),
-            cspell.code_actions.with({ config = config }),
-        }
-    }
+
+    -- conditionally setup cspell based on current working directory
+    local cwd = vim.fn.getcwd()
+    local nvim_config_dir = vim.fn.expand("~/.config/nvim")
+
+    if cwd ~= nvim_config_dir then
+      require("null-ls").setup {
+          sources = {
+              cspell.diagnostics.with({ config = config }),
+              cspell.code_actions.with({ config = config }),
+          }
+      }
+    else
+      require("null-ls").setup {
+          sources = {}
+      }
+    end
   end
 }}
