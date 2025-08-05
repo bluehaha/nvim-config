@@ -68,6 +68,7 @@ return {{
     keymap('n', 'K', vim.lsp.buf.hover, options)
     -- keymap('n', '<Leader>mr', vim.lsp.buf.rename, options) -- 該功能需付費
     keymap('n', '<Leader>mf', fzf.lsp_references, options)
+    keymap('n', '<Leader>mi', fzf.lsp_implementations, options)
     keymap('n', '<Leader>a', vim.lsp.buf.code_action, options)
     keymap('n', 'gd', fzf.lsp_definitions, options)
 

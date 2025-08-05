@@ -2,6 +2,7 @@ vim.keymap.set('n', 's', ':w<CR>')
 vim.keymap.set('n', 'qq', ':qall<CR>')
 vim.keymap.set('n', '<Leader>q', ':q<CR>')
 vim.keymap.set('n', '<Space>', ':nohlsearch<CR>')
+vim.keymap.set('n', '<Leader>dt', ':bp|bd #<CR>:q<CR>')
 -- copy to clipboard
 vim.keymap.set('v', '<Leader>y', '"*y')
 -- move lines up and down using ctrl+[jk]

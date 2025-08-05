@@ -1,7 +1,15 @@
 -- remove trailing whitespace before saving buffer
-local whitespace = vim.api.nvim_create_augroup('whitespace', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  group = whitespace,
-  command = [[:%s/\s\+$//e]],
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function()
+    vim.cmd([[%s/\s\+$//e]])
+  end,
+})
+
+-- disable auto-reload of nvim config files
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = vim.fn.expand("~") .. "/.config/nvim/**/*.lua",
+  callback = function()
+    -- do nothing to prevent auto-reload
+  end,
 })
