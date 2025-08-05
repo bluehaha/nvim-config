@@ -34,7 +34,6 @@ return {{
             return #vim.fn.gettabinfo() > 1
           end,
         }},
-
       }
     }
   end
