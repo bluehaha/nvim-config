@@ -20,14 +20,14 @@ vim.keymap.set('n', '<Leader>cs', function()
   local null_ls = require("null-ls")
   local sources = null_ls.get_sources()
   local cspell_active = false
-  
+
   for _, source in ipairs(sources) do
     if source.name == "cspell" then
       cspell_active = true
       break
     end
   end
-  
+
   if cspell_active then
     null_ls.disable("cspell")
     print("CSpell disabled")
