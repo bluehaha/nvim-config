@@ -1,6 +1,6 @@
 return {{
   'ibhagwan/fzf-lua',
-  dependencies = { 
+  dependencies = {
     { "junegunn/fzf", build = "./install --bin" }
   },
   config = function()
@@ -37,8 +37,42 @@ return {{
       }
     })
 
+    --  使用範例：
+    -- :Ag "function"           " 在當前目錄搜尋 "function"
+    -- :Ag "function" src/      " 在 src/ 目錄搜尋 "function"
+    -- :Ag function             " 無引號也可以（單個詞）
     vim.api.nvim_create_user_command('Ag', function(opts)
-      fzf.grep_project({ search = opts.args })
+      local args_str = opts.args or ''
+      local search_term = ''
+      local cwd = nil
+
+      -- 處理引號包圍的搜尋詞
+      local quoted_pattern = [["([^"]*)"]] -- 雙引號
+      local single_quoted_pattern = [['([^']*)']] -- 單引號
+
+      local match = args_str:match(quoted_pattern)
+      if not match then
+        match = args_str:match(single_quoted_pattern)
+      end
+
+      if match then
+        search_term = match
+        -- 移除引號部分，取得剩餘的參數作為路徑
+        local remaining = args_str:gsub([["[^"]*"]], ''):gsub([['[^']*']], ''):gsub('^%s+', ''):gsub('%s+$', '')
+        if remaining ~= '' then
+          cwd = remaining
+        end
+      else
+        -- 沒有引號的情況，按空格分割
+        local args = vim.split(args_str, ' ', { trimempty = true })
+        search_term = args[1] or ''
+        cwd = args[2] or nil
+      end
+
+      fzf.grep_project({
+        search = search_term,
+        cwd = cwd
+      })
     end, { bang = true, nargs = '?' })
 
     vim.api.nvim_create_user_command('BCommits', function(opts)
