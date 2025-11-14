@@ -40,7 +40,17 @@ return {{
       -- 原本是想讓一般 php 也可以在根目錄偵測，但是看起來會跟 composer.json 衝突
       -- root_dir = util.root_pattern("composer.json", ".git", "./"),
     })
-    lspconfig.pyright.setup({})
+    lspconfig.pyright.setup({
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "basic", -- 或 "strict"
+            autoImportCompletions = true,
+            useLibraryCodeForTypes = true,
+          },
+        },
+      },
+    })
 
     vim.diagnostic.config({
       virtual_text = true,
@@ -54,10 +64,6 @@ return {{
     local fzf_utils = require('fzf-lua.utils')
     local keymap = vim.keymap.set
     local options = { silent = true }
-
-    local lsp_workspace_symbols_visual = function()
-      fzf.lsp_workspace_symbols({ lsp_query = fzf_utils.get_visual_selection() })
-    end
 
     keymap('n', '<Leader>d', vim.diagnostic.open_float, options) -- 顯示錯誤訊息
     keymap('n', '[d', vim.diagnostic.goto_prev, options) -- 跳到上一個錯誤
