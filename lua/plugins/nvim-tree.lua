@@ -31,7 +31,7 @@ return {
       },
       filters = {
         dotfiles = false,
-        custom = { '.DS_Store' },
+        custom = { '.DS_Store', '.venv' },
       },
       git = {
         ignore = false,
