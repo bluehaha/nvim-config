@@ -10,6 +10,10 @@ return {{
   },
   config = function()
     require('mason').setup()
+
+    local lspconfig = require('lspconfig')
+    local util = require('lspconfig.util')
+
     require('mason-lspconfig').setup({
       -- lsp, treesitter 兩者需要的語言要連動
       ensure_installed = {
@@ -19,36 +23,50 @@ return {{
         "intelephense", -- php
         "pyright",       -- python
       },
-    })
-
-    local lspconfig = require('lspconfig')
-
-    -- local util = require('lspconfig.util')
-
-    lspconfig.lua_ls.setup({
-      settings = {
-        Lua = {
-          diagnostics = {
-            globals = { 'vim' },
-          },
-        },
-      },
-    })
-    lspconfig.ts_ls.setup({})
-    -- lspconfig.volar.setup({})
-    lspconfig.intelephense.setup({
-      -- 原本是想讓一般 php 也可以在根目錄偵測，但是看起來會跟 composer.json 衝突
-      -- root_dir = util.root_pattern("composer.json", ".git", "./"),
-    })
-    lspconfig.pyright.setup({
-      settings = {
-        python = {
-          analysis = {
-            typeCheckingMode = "basic", -- 或 "strict"
-            autoImportCompletions = true,
-            useLibraryCodeForTypes = true,
-          },
-        },
+      handlers = {
+        -- default handler for all servers
+        function(server_name)
+          lspconfig[server_name].setup({})
+        end,
+        -- custom handlers for specific servers
+        ["lua_ls"] = function()
+          lspconfig.lua_ls.setup({
+            settings = {
+              Lua = {
+                diagnostics = {
+                  globals = { 'vim' },
+                },
+              },
+            },
+          })
+        end,
+        ["ts_ls"] = function()
+          lspconfig.ts_ls.setup({
+            root_dir = function(fname)
+              -- find root directory but exclude node_modules
+              local root = util.root_pattern('package.json', 'tsconfig.json', 'jsconfig.json', '.git')(fname)
+              -- if the root is inside node_modules, return nil to prevent LSP from starting
+              if root and root:match('node_modules') then
+                return nil
+              end
+              return root
+            end,
+          })
+        end,
+        ["pyright"] = function()
+          lspconfig.pyright.setup({
+            settings = {
+              python = {
+                analysis = {
+                  typeCheckingMode = "basic", -- 或 "strict"
+                  autoImportCompletions = true,
+                  useLibraryCodeForTypes = true,
+                },
+              },
+            },
+          })
+        end,
+        -- intelephense uses default handler (no special config needed)
       },
     })
 
