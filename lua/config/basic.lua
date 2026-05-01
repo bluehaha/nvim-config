@@ -44,3 +44,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "typescript", "js", "javascript", "json", "vue", "css", "html", "pug", "scss", "yml", "lua", "tsp", "markdown" },
     command = "setlocal sw=2 sts=2 ts=2"
 })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    command = "setlocal wrap"
+})
