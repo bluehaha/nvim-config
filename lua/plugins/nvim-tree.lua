@@ -31,7 +31,7 @@ return {
       },
       filters = {
         dotfiles = false,
-        custom = { '.DS_Store', '.venv' },
+        custom = { '.DS_Store', '.venv', '__pycache__' },
       },
       git = {
         ignore = false,
