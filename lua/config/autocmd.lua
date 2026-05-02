@@ -1,3 +1,15 @@
+-- truncate LSP log on startup if it exceeds 10MB (Copilot is a noisy logger)
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    local log = vim.lsp.get_log_path()
+    local stat = vim.uv.fs_stat(log)
+    if stat and stat.size > 10 * 1024 * 1024 then
+      local f = io.open(log, "w")
+      if f then f:close() end
+    end
+  end,
+})
+
 -- remove trailing whitespace before saving buffer
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
