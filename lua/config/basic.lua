@@ -37,7 +37,7 @@ vim.opt.foldlevel = 20
 
 -- Custom setting for different file type
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = "make",
+    pattern = { "make", "go" },
     command = "setlocal noexpandtab"
 })
 vim.api.nvim_create_autocmd("FileType", {

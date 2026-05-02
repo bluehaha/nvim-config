@@ -8,7 +8,7 @@ return {{
   config = function()
     require('nvim-treesitter.configs').setup({
       -- lsp, treesitter 兩者需要的語言要連動
-      ensure_installed = { "lua", "typescript", "php" },
+      ensure_installed = { "lua", "typescript", "php", "go" },
       sync_install = false,
       highlight = {
         enable = true,

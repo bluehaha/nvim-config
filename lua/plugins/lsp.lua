@@ -22,6 +22,7 @@ return {{
         -- "volar",        -- vue
         "intelephense", -- php
         "pyright",       -- python
+        "gopls",        -- go
       },
       handlers = {
         -- default handler for all servers
