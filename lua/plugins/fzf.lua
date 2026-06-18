@@ -20,6 +20,11 @@ return {{
           ['<C-b>'] = 'preview-page-up',
           ['<C-f>'] = 'preview-page-down',
         },
+        fzf = {
+          ['ctrl-_'] = 'toggle-preview',
+          ['ctrl-b'] = 'preview-page-up',
+          ['ctrl-f'] = 'preview-page-down',
+        },
       },
       fzf_opts = {
         ['--layout'] = false,
