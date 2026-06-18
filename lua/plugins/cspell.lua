@@ -18,21 +18,42 @@ return {{
 
     local cspell = require('cspell')
 
-    -- conditionally setup cspell based on current working directory
-    local cwd = vim.fn.getcwd()
-    local nvim_config_dir = vim.fn.expand("~/.config/nvim")
+    -- Directories (and their subdirectories) where cspell should be disabled.
+    local disabled_prefixes = {
+      vim.fn.expand("~/.config/nvim"),
+      vim.fn.expand("~/Project/universetech/open-im-server"),
+    }
 
-    if cwd ~= nvim_config_dir then
-      require("null-ls").setup {
-          sources = {
-              cspell.diagnostics.with({ config = config }),
-              cspell.code_actions.with({ config = config }),
-          }
-      }
-    else
-      require("null-ls").setup {
-          sources = {}
-      }
+    local function is_disabled(cwd)
+      for _, prefix in ipairs(disabled_prefixes) do
+        if cwd == prefix or cwd:sub(1, #prefix + 1) == prefix .. "/" then
+          return true
+        end
+      end
+      return false
     end
+
+    -- Conditionally setup cspell sources based on the current working directory.
+    local function setup_cspell()
+      if is_disabled(vim.fn.getcwd()) then
+        require("null-ls").setup {
+          sources = {}
+        }
+      else
+        require("null-ls").setup {
+          sources = {
+            cspell.diagnostics.with({ config = config }),
+            cspell.code_actions.with({ config = config }),
+          }
+        }
+      end
+    end
+
+    setup_cspell()
+
+    -- Re-evaluate when the working directory changes during a session.
+    vim.api.nvim_create_autocmd("DirChanged", {
+      callback = setup_cspell,
+    })
   end
 }}
